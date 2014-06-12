@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.heidenreich.glitch.GlitchGame;
 import com.heidenreich.glitch.handlers.Animation;
@@ -14,7 +15,9 @@ public class Player {
 	private Animation idle;
 	private Animation walkingleft;
 	private Animation walkingright;
+	private boolean ground;
 	private float gravityMultiplier = 0.075f;
+	private Rectangle rect;
 	private Vector2 location;
 	private Vector2 velocity;
 
@@ -29,10 +32,13 @@ public class Player {
 		walkingleft = new Animation(s, 1 / 4f);
 		location = new Vector2(400, 60);
 		velocity = new Vector2(0, 0);
+		ground = true;
+		rect = new Rectangle(location.x, location.y, 45, 45);
 	}
 
 	public void update(float delta) {
 		handleInput();
+		rect.setPosition(location);
 		location.add(velocity);
 		idle.update(delta);
 		walkingright.update(delta);
@@ -41,11 +47,11 @@ public class Player {
 
 	public void render(SpriteBatch batch) {
 		batch.begin();
-		if (velocity.x > 0 || velocity.y > 0) {
+		if (velocity.x > 0 || velocity.y > 0 && !ground) {
 			walkingright.getFrame().setPosition(
 					location.x - idle.getFrame().getWidth() / 2, location.y);
 			walkingright.getFrame().draw(batch);
-		} else if (velocity.x < 0 || velocity.y < 0) {
+		} else if (velocity.x < 0 || velocity.y < 0 && !ground) {
 			walkingleft.getFrame().setPosition(
 					location.x - idle.getFrame().getWidth() / 2, location.y);
 			walkingleft.getFrame().draw(batch);
@@ -69,16 +75,39 @@ public class Player {
 				velocity.x = 0;
 			else
 				velocity.x /= 2;
-			if (GlitchInput.isDown(GlitchInput.BUTTON3)
-					&& location.y == GlitchGame.FLOOR)
-				velocity.y = 12f;
-			else if (location.y > GlitchGame.FLOOR)
-				velocity.y += GlitchGame.GRAVITY * gravityMultiplier;
-			else if (location.y < GlitchGame.FLOOR) {
-				location.y = GlitchGame.FLOOR;
+
+			if (ground)
 				velocity.y = 0;
+
+			if (GlitchInput.isDown(GlitchInput.BUTTON3) && ground) {
+				velocity.y = 12f;
+				ground = false;
+			} else
+				velocity.y += GlitchGame.GRAVITY * gravityMultiplier;
+
+			if (location.x < 10) {
+				velocity.x = 0;
+				location.x = 11;
+			} else if (location.x > 790) {
+				velocity.x = 0;
+				location.x = 789;
 			}
 		}
 	}
 
+	public void setGround(boolean ground) {
+		this.ground = ground;
+	}
+
+	public Rectangle getRect() {
+		return rect;
+	}
+
+	public void setY(float y) {
+		location.y = y;
+	}
+
+	public boolean checkFloor() {
+		return location.y < GlitchGame.FLOOR;
+	}
 }
