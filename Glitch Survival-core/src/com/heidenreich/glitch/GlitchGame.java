@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.heidenreich.glitch.handlers.Assets;
 import com.heidenreich.glitch.handlers.GlitchInputProcessor;
+import com.heidenreich.glitch.handlers.Scores;
 import com.heidenreich.glitch.screens.StartScreen;
 
 public class GlitchGame extends Game {
@@ -28,6 +29,7 @@ public class GlitchGame extends Game {
 		buttonFont = new BitmapFont(Gdx.files.internal("data/font.fnt"));
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(new GlitchInputProcessor());
+		Scores score = new Scores();
 		this.setScreen(new StartScreen(this));
 	}
 
@@ -41,5 +43,9 @@ public class GlitchGame extends Game {
 
 	public BitmapFont getButtonFont() {
 		return buttonFont;
+	}
+
+	public void dispose() {
+		Scores.saveScores();
 	}
 }

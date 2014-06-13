@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.heidenreich.glitch.GlitchGame;
 import com.heidenreich.glitch.handlers.Background;
 import com.heidenreich.glitch.handlers.GlitchInput;
+import com.heidenreich.glitch.handlers.Scores;
 import com.heidenreich.glitch.objects.Enemy;
 import com.heidenreich.glitch.objects.Platform;
 import com.heidenreich.glitch.objects.Player;
@@ -138,8 +139,10 @@ public class GameScreen implements Screen {
 
 			if (GlitchInput.isDown())
 				buffer = true;
-			else if (!GlitchInput.isDown() && buffer)
-				game.setScreen(new StartScreen(game));
+			else if (!GlitchInput.isDown() && buffer) {
+				Scores.sendScore(minutes, seconds);
+				game.setScreen(new HighscoreScreen(game));
+			}
 		}
 	}
 
