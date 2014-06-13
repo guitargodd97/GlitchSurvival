@@ -20,7 +20,8 @@ public class Enemy {
 	public Enemy() {
 		animation = new Animation(GlitchGame.assets.getAnimatedSprite("enemy",
 				8), 1 / 20f);
-		location = new Vector2(200, 420);
+		location = new Vector2((float) ((Math.random() * 75000000) % 750) + 15,
+				550);
 		velocity = new Vector2(1.9f, 0);
 		ground = false;
 		rect = new Rectangle(location.x + 5, location.y, 20, 20);
@@ -72,5 +73,8 @@ public class Enemy {
 	public boolean checkFloor() {
 		return location.y < GlitchGame.FLOOR;
 	}
-
+	
+	public boolean onFloor() {
+		return location.y == GlitchGame.FLOOR;
+	}
 }
