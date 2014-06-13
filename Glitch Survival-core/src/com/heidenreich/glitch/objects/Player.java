@@ -13,10 +13,12 @@ import com.heidenreich.glitch.handlers.GlitchInput;
 public class Player {
 
 	private Animation idle;
+	private Animation idleAlt;
 	private Animation walkingleft;
 	private Animation walkingright;
 	private boolean ground;
 	private boolean jumping;
+	private boolean left;
 	private float gravityMultiplier = 0.075f;
 	private Rectangle rect;
 	private Vector2 location;
@@ -31,11 +33,16 @@ public class Player {
 		for (Sprite o : s)
 			o.flip(true, false);
 		walkingleft = new Animation(s, 1 / 4f);
+		s = GlitchGame.assets.getAnimatedSprite("player-idle", 2);
+		for (Sprite o : s)
+			o.flip(true, false);
+		idleAlt = new Animation(s, 1 / 4f);
 		location = new Vector2(400, 60);
 		velocity = new Vector2(0, 0);
 		ground = true;
 		jumping = false;
 		rect = new Rectangle(location.x, location.y, 45, 45);
+		left = false;
 	}
 
 	public void update(float delta) {
@@ -43,6 +50,7 @@ public class Player {
 		rect.setPosition(location);
 		location.add(velocity);
 		idle.update(delta);
+		idleAlt.update(delta);
 		walkingright.update(delta);
 		walkingleft.update(delta);
 	}
@@ -53,14 +61,26 @@ public class Player {
 			walkingright.getFrame().setPosition(
 					location.x - idle.getFrame().getWidth() / 2, location.y);
 			walkingright.getFrame().draw(batch);
+			left = false;
 		} else if (velocity.x < 0 || velocity.y < 0 && !ground) {
 			walkingleft.getFrame().setPosition(
 					location.x - idle.getFrame().getWidth() / 2, location.y);
 			walkingleft.getFrame().draw(batch);
+			left = true;
 		} else {
-			idle.getFrame().setPosition(
-					location.x - idle.getFrame().getWidth() / 2, location.y);
-			idle.getFrame().draw(batch);
+			if (!left) {
+				idle.getFrame()
+						.setPosition(
+								location.x - idle.getFrame().getWidth() / 2,
+								location.y);
+				idle.getFrame().draw(batch);
+			} else {
+				idleAlt.getFrame()
+						.setPosition(
+								location.x - idle.getFrame().getWidth() / 2,
+								location.y);
+				idleAlt.getFrame().draw(batch);
+			}
 		}
 		batch.end();
 	}

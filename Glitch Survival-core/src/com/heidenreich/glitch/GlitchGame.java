@@ -20,6 +20,7 @@ public class GlitchGame extends Game {
 
 	private BitmapFont font;
 	private BitmapFont buttonFont;
+	private Scores score;
 	private SpriteBatch batch;
 
 	public void create() {
@@ -29,7 +30,7 @@ public class GlitchGame extends Game {
 		buttonFont = new BitmapFont(Gdx.files.internal("data/font.fnt"));
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(new GlitchInputProcessor());
-		Scores score = new Scores();
+		score = new Scores();
 		this.setScreen(new StartScreen(this));
 	}
 
@@ -47,5 +48,9 @@ public class GlitchGame extends Game {
 
 	public void dispose() {
 		Scores.saveScores();
+	}
+
+	public Scores getScores() {
+		return score;
 	}
 }

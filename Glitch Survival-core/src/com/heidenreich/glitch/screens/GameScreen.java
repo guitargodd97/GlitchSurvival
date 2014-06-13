@@ -47,7 +47,8 @@ public class GameScreen implements Screen {
 		platforms.add(new Platform(new Vector2(500, 170)));
 		platforms.add(new Platform(new Vector2(260, 260)));
 		platforms.add(new Platform(new Vector2(60, 340)));
-		platforms.add(new Platform(new Vector2(460, 350)));
+		platforms.add(new Platform(new Vector2(760, 400)));
+		platforms.add(new Platform(new Vector2(660, 290)));
 		running = true;
 		buffer = false;
 		startTime = TimeUtils.millis();
@@ -124,7 +125,7 @@ public class GameScreen implements Screen {
 			game.getFont().draw(batch, time, 330, 55);
 			batch.end();
 
-			if (enemies.size * 5 < seconds + (minutes * 60))
+			if (enemies.size * 3 < seconds + (minutes * 60))
 				enemies.add(new Enemy());
 		} else {
 			String time = "";

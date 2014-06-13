@@ -31,7 +31,7 @@ public class Enemy {
 	public void update(float delta) {
 		handleMovement();
 		rect.setPosition(location);
-		location.add(new Vector2(0, velocity.y));
+		location.add(new Vector2((float) (Math.random() * 5 - 2.5f), velocity.y));
 		animation.update(delta);
 	}
 
@@ -52,7 +52,13 @@ public class Enemy {
 			if (curDistance >= distance || location.x > 790 || location.x < 10) {
 				curDistance -= distance;
 				velocity.x *= -1;
+				if (location.x > 790)
+					location.x = 788;
+				else if (location.x < 10)
+					location.x = 12;
 			}
+			if (Math.random() * 1000 < 50)
+				velocity.y = 5;
 		}
 
 	}
@@ -73,7 +79,7 @@ public class Enemy {
 	public boolean checkFloor() {
 		return location.y < GlitchGame.FLOOR;
 	}
-	
+
 	public boolean onFloor() {
 		return location.y == GlitchGame.FLOOR;
 	}
