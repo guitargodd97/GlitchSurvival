@@ -143,7 +143,7 @@ public class GameScreen implements Screen {
 			game.getFont().draw(batch, time, 330, 55);
 			batch.end();
 
-			if (enemies.size * 3 < seconds + (minutes * 60))
+			if (enemies.size * 2 < seconds + (minutes * 60))
 				enemies.add(new Enemy());
 			if (Math.random() * 1000 < 1)
 				GlitchGame.assets.getSound("glitch").play();

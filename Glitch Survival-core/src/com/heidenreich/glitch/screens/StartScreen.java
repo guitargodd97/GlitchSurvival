@@ -33,9 +33,9 @@ public class StartScreen implements Screen {
 				2), 400, 170);
 		quit = new GUIButton(GlitchGame.assets.getAnimatedSprite("button", 2),
 				400, 70);
-		GlitchGame.assets.getMusic(
-				"glitch" + ((int) (((Math.random() * 232493291) % 9) % 3 + 1)))
-				.setLooping(true);
+		GlitchGame.assets.getMusic("glitch1").setLooping(true);
+		GlitchGame.assets.getMusic("glitch2").setLooping(true);
+		GlitchGame.assets.getMusic("glitch3").setLooping(true);
 		GlitchGame.assets.getMusic(
 				"glitch" + ((int) (((Math.random() * 232493291) % 9) % 3 + 1)))
 				.play();

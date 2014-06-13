@@ -25,13 +25,13 @@ public class Enemy {
 		velocity = new Vector2(1.9f, 0);
 		ground = false;
 		rect = new Rectangle(location.x + 5, location.y, 20, 20);
-		distance = 180;
+		distance = (float) (Math.random() * 110000010) % 500 + 180;
 	}
 
 	public void update(float delta) {
 		handleMovement();
 		rect.setPosition(location);
-		location.add(new Vector2((float) (Math.random() * 5 - 2.5f), velocity.y));
+		location.add(new Vector2((float) (Math.random() * 7 - 3.5f), velocity.y));
 		animation.update(delta);
 	}
 

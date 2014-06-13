@@ -83,16 +83,6 @@ public class Assets {
 			textureManager.unload(name);
 	}
 
-	// Loads a particular asset
-	public <T> void loadAsset(String name, Class<T> type) {
-		if (type.isAssignableFrom(Music.class))
-			musicManager.load(name, type);
-		else if (type.isAssignableFrom(Sound.class))
-			soundManager.load(name, type);
-		else if (type.isAssignableFrom(TextureAtlas.class))
-			textureManager.load(name, TextureAtlas.class);
-	}
-
 	// Returns if the managers are done loading everything
 	public boolean doneLoading() {
 		return musicManager.update() && soundManager.update()
