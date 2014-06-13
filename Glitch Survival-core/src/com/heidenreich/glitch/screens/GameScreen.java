@@ -45,6 +45,8 @@ public class GameScreen implements Screen {
 		platforms.add(new Platform(new Vector2(220, 120)));
 		platforms.add(new Platform(new Vector2(500, 170)));
 		platforms.add(new Platform(new Vector2(260, 260)));
+		platforms.add(new Platform(new Vector2(60, 340)));
+		platforms.add(new Platform(new Vector2(460, 350)));
 		running = true;
 		buffer = false;
 		startTime = TimeUtils.millis();
@@ -75,10 +77,14 @@ public class GameScreen implements Screen {
 			}
 
 			for (Platform platform : platforms) {
-				if (!player.isJumping()
-						&& platform.getRect().overlaps(player.getRect())) {
-					player.setGround(true);
-					player.setY(platform.getRect().getY() + 14);
+				if (platform.getRect().overlaps(player.getRect())) {
+					if (player.goingDown(platform.getRect().getY())) {
+						player.setGround(true);
+						if (!player.isJumping())
+							player.setY(platform.getRect().getY() + 14);
+					} else {
+						player.sendDown();
+					}
 				} else if (player.checkFloor()) {
 					player.setGround(true);
 					player.setY(GlitchGame.FLOOR);

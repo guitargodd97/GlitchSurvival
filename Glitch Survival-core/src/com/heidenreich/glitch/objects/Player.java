@@ -78,8 +78,6 @@ public class Player {
 			else
 				velocity.x /= 2;
 
-				
-
 			if (GlitchInput.isDown(GlitchInput.BUTTON3) && ground) {
 				velocity.y = 12f;
 				ground = false;
@@ -119,5 +117,16 @@ public class Player {
 
 	public boolean isJumping() {
 		return jumping;
+	}
+
+	public boolean goingDown(float y) {
+		if (y < location.y + 15)
+			return true;
+		return false;
+	}
+
+	public void sendDown() {
+		if (velocity.y > 0)
+			velocity.y = -0.1f;
 	}
 }
