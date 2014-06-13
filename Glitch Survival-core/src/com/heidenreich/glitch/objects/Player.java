@@ -16,6 +16,7 @@ public class Player {
 	private Animation walkingleft;
 	private Animation walkingright;
 	private boolean ground;
+	private boolean jumping;
 	private float gravityMultiplier = 0.075f;
 	private Rectangle rect;
 	private Vector2 location;
@@ -33,6 +34,7 @@ public class Player {
 		location = new Vector2(400, 60);
 		velocity = new Vector2(0, 0);
 		ground = true;
+		jumping = false;
 		rect = new Rectangle(location.x, location.y, 45, 45);
 	}
 
@@ -76,14 +78,17 @@ public class Player {
 			else
 				velocity.x /= 2;
 
-			if (ground)
-				velocity.y = 0;
+				
 
 			if (GlitchInput.isDown(GlitchInput.BUTTON3) && ground) {
 				velocity.y = 12f;
 				ground = false;
+				jumping = true;
 			} else
 				velocity.y += GlitchGame.GRAVITY * gravityMultiplier;
+
+			if (!GlitchInput.isPressed(GlitchInput.BUTTON3) && jumping)
+				jumping = false;
 
 			if (location.x < 10) {
 				velocity.x = 0;
@@ -105,9 +110,14 @@ public class Player {
 
 	public void setY(float y) {
 		location.y = y;
+		velocity.y = 0;
 	}
 
 	public boolean checkFloor() {
 		return location.y < GlitchGame.FLOOR;
+	}
+
+	public boolean isJumping() {
+		return jumping;
 	}
 }

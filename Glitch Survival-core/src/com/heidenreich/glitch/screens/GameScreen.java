@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.heidenreich.glitch.GlitchGame;
 import com.heidenreich.glitch.handlers.Background;
+import com.heidenreich.glitch.handlers.GlitchInput;
 import com.heidenreich.glitch.objects.Enemy;
 import com.heidenreich.glitch.objects.Platform;
 import com.heidenreich.glitch.objects.Player;
@@ -54,14 +55,15 @@ public class GameScreen implements Screen {
 		enemy.update(delta);
 		enemy.render(batch);
 
-		if (platform.getRect().overlaps(player.getRect())) {
+		if (!player.isJumping() && platform.getRect().overlaps(player.getRect())) {
 			player.setGround(true);
-			player.setY(platform.getRect().getY() + 15);
+			player.setY(platform.getRect().getY() + 14);
 		} else if (player.checkFloor()) {
 			player.setGround(true);
 			player.setY(GlitchGame.FLOOR);
 		} else {
-			player.setGround(false);
+			if (GlitchInput.isReleased())
+				player.setGround(false);
 		}
 	}
 
