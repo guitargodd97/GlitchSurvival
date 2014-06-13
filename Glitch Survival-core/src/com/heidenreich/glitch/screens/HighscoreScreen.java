@@ -13,6 +13,7 @@ public class HighscoreScreen implements Screen {
 
 	private Background background;
 	private GlitchGame game;
+	private int adShown;
 	private int buffer;
 	private Sprite panel;
 	private Sprite titleBack;
@@ -27,6 +28,7 @@ public class HighscoreScreen implements Screen {
 		titleBack.setPosition(
 				(Gdx.graphics.getWidth() - titleBack.getWidth()) / 2, 380);
 		buffer = 0;
+		adShown = 0;
 	}
 
 	public void render(float delta) {
@@ -53,18 +55,31 @@ public class HighscoreScreen implements Screen {
 				300, 125);
 		game.getBatch().end();
 
-		if (!GlitchInput.isDown() && buffer == 0)
-			buffer = 1;
-		else if (GlitchInput.isDown() && buffer == 1)
-			buffer = 2;
-		else if (!GlitchInput.isDown() && buffer == 2)
-			game.setScreen(new StartScreen(game));
+		if (adShown == 0) {
+			game.launchInterstitial();
+			game.getBatch().begin();
+			game.getFont().draw(game.getBatch(), "Loading.... Please wait...",
+					120, 75);
+			game.getBatch().end();
+		} else {
+			if (!GlitchInput.isDown() && buffer == 0)
+				buffer = 1;
+			else if (GlitchInput.isDown() && buffer == 1)
+				buffer = 2;
+			else if (!GlitchInput.isDown() && buffer == 2)
+				game.setScreen(new StartScreen(game));
+		}
+		if (game.isShown())
+			adShown++;
 	}
 
 	public void resize(int width, int height) {
 	}
 
 	public void show() {
+		GlitchGame.assets.getMusic("glitch1").stop();
+		GlitchGame.assets.getMusic("glitch2").stop();
+		GlitchGame.assets.getMusic("glitch3").stop();
 	}
 
 	public void hide() {

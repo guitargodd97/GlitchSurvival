@@ -32,6 +32,26 @@ public class GameScreen implements Screen {
 	private Sprite base;
 	private SpriteBatch batch;
 
+	public static final Vector2[][] LEVELS = new Vector2[][] {
+
+			{ new Vector2(220, 120), new Vector2(500, 170),
+					new Vector2(260, 260), new Vector2(60, 340),
+					new Vector2(760, 400), new Vector2(660, 290) },
+			{ new Vector2(500, 120), new Vector2(760, 170),
+					new Vector2(260, 260), new Vector2(220, 340),
+					new Vector2(60, 400), new Vector2(660, 290) },
+
+			{ new Vector2(270, 140), new Vector2(560, 370),
+					new Vector2(700, 160), new Vector2(180, 340),
+					new Vector2(60, 200), new Vector2(460, 190) },
+
+			{ new Vector2(50, 140), new Vector2(200, 370),
+					new Vector2(350, 160), new Vector2(500, 340),
+					new Vector2(650, 200), new Vector2(725, 410) },
+			{ new Vector2(10, 200), new Vector2(100, 120),
+					new Vector2(210, 320), new Vector2(610, 340),
+					new Vector2(520, 220), new Vector2(715, 150) } };
+
 	public GameScreen(GlitchGame game) {
 		this.game = game;
 		batch = game.getBatch();
@@ -43,16 +63,14 @@ public class GameScreen implements Screen {
 		enemies = new Array<Enemy>();
 		enemies.add(new Enemy());
 		platforms = new Array<Platform>();
-		platforms.add(new Platform(new Vector2(220, 120)));
-		platforms.add(new Platform(new Vector2(500, 170)));
-		platforms.add(new Platform(new Vector2(260, 260)));
-		platforms.add(new Platform(new Vector2(60, 340)));
-		platforms.add(new Platform(new Vector2(760, 400)));
-		platforms.add(new Platform(new Vector2(660, 290)));
+		int x = (int) (Math.random() * (LEVELS.length));
+		for (int i = 0; i < LEVELS[x].length; i++)
+			platforms.add(new Platform(LEVELS[x][i]));
 		running = true;
 		buffer = false;
 		startTime = TimeUtils.millis();
 		curTime = TimeUtils.millis();
+		game.activateAds();
 	}
 
 	public void render(float delta) {
@@ -127,6 +145,8 @@ public class GameScreen implements Screen {
 
 			if (enemies.size * 3 < seconds + (minutes * 60))
 				enemies.add(new Enemy());
+			if (Math.random() * 1000 < 1)
+				GlitchGame.assets.getSound("glitch").play();
 		} else {
 			String time = "";
 			if (seconds < 10)
@@ -138,10 +158,15 @@ public class GameScreen implements Screen {
 			game.getFont().draw(batch, "Touch to Continue....", 175, 200);
 			batch.end();
 
+			GlitchGame.assets.getMusic("glitch1").stop();
+			GlitchGame.assets.getMusic("glitch2").stop();
+			GlitchGame.assets.getMusic("glitch3").stop();
+
 			if (GlitchInput.isDown())
 				buffer = true;
 			else if (!GlitchInput.isDown() && buffer) {
 				Scores.sendScore(minutes, seconds);
+				game.disableAds();
 				game.setScreen(new HighscoreScreen(game));
 			}
 		}

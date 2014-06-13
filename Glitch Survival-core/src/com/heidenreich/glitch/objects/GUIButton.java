@@ -47,10 +47,14 @@ public class GUIButton {
 
 	// Updates the button
 	public void update(float dt) {
-		if (GlitchInput.isPressed() && GlitchInput.x > x - width / 2
-				&& GlitchInput.x < x + width / 2
-				&& GlitchInput.y > y - height / 2
-				&& GlitchInput.y < y + height / 2) {
+		if (GlitchInput.isPressed()
+				&& ((GlitchInput.x > x - width / 2
+						&& GlitchInput.x < x + width / 2
+						&& GlitchInput.y > y - height / 2 && GlitchInput.y < y
+						+ height / 2) || (GlitchInput.xx > x - width / 2
+						&& GlitchInput.xx < x + width / 2
+						&& GlitchInput.yy > y - height / 2 && GlitchInput.yy < y
+						+ height / 2))) {
 			clicked = true;
 		} else {
 			clicked = false;

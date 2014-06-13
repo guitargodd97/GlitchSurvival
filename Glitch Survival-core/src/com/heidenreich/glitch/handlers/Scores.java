@@ -15,11 +15,10 @@ public class Scores {
 		if (!fileLocation.exists())
 			fileLocation.writeString("0|0|0|0|0", false);
 		String s = fileLocation.readString();
-		for (int i = 0; i < scoreValues.length - 2; i++) {
+		for (int i = 0; i < scoreValues.length - 1; i++) {
 			scoreValues[i] = Integer.parseInt(s.substring(0, s.indexOf("|")));
 			s = s.substring(s.indexOf("|") + 1);
 		}
-		s = s.substring(s.indexOf("|") + 1);
 		scoreValues[4] = Integer.parseInt(s);
 		updateStringScores();
 	}

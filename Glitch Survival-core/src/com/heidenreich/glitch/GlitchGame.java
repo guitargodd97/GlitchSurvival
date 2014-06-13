@@ -12,7 +12,7 @@ import com.heidenreich.glitch.screens.StartScreen;
 public class GlitchGame extends Game {
 
 	public static final String NAME = "GLITCH SURVIVAL";
-	public static final String VERSION = "Alpha 1.0";
+	public static final String VERSION = "Alpha 2.0";
 	public static final float GRAVITY = -9.81f;
 	public static final int FLOOR = 60;
 
@@ -20,8 +20,15 @@ public class GlitchGame extends Game {
 
 	private BitmapFont font;
 	private BitmapFont buttonFont;
+	private boolean ads;
+	private IActivityRequestHandler myRequestHandler;
 	private Scores score;
 	private SpriteBatch batch;
+
+	public GlitchGame(IActivityRequestHandler handler) {
+		myRequestHandler = handler;
+		ads = false;
+	}
 
 	public void create() {
 		assets = new Assets();
@@ -48,9 +55,34 @@ public class GlitchGame extends Game {
 
 	public void dispose() {
 		Scores.saveScores();
+		assets.disposeAll();
 	}
 
 	public Scores getScores() {
 		return score;
+	}
+
+	// Displays the ads
+	public void activateAds() {
+		if (!ads) {
+			myRequestHandler.showAds(true);
+			ads = true;
+		}
+	}
+
+	// Hides the ads
+	public void disableAds() {
+		if (ads) {
+			myRequestHandler.showAds(false);
+			ads = false;
+		}
+	}
+
+	public void launchInterstitial() {
+		myRequestHandler.showOrLoadInterstital();
+	}
+
+	public boolean isShown() {
+		return myRequestHandler.shown();
 	}
 }

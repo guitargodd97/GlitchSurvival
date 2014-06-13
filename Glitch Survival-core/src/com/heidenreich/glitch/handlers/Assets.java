@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public class Assets {
 
 	public static final String TEXTURE_LOCATION = "data/textures/texture.atlas";
+	public static final String SFX_LOCATION = "data/sound/sfx/";
+	public static final String MUSIC_LOCATION = "data/sound/music/";
 
 	private AssetManager musicManager;
 	private AssetManager soundManager;
@@ -38,11 +40,16 @@ public class Assets {
 
 	// Loads all the sound files
 	private void loadSounds() {
+		soundManager.load(SFX_LOCATION + "jump.mp3", Sound.class);
+		soundManager.load(SFX_LOCATION + "glitch.mp3", Sound.class);
 		soundManager.finishLoading();
 	}
 
 	// Loads all the music files
 	private void loadMusic() {
+		musicManager.load(MUSIC_LOCATION + "glitch1.mp3", Music.class);
+		musicManager.load(MUSIC_LOCATION + "glitch2.mp3", Music.class);
+		musicManager.load(MUSIC_LOCATION + "glitch3.mp3", Music.class);
 		musicManager.finishLoading();
 	}
 
@@ -94,12 +101,12 @@ public class Assets {
 
 	// Retrieves a sound
 	public Sound getSound(String name) {
-		return soundManager.get(name, Sound.class);
+		return soundManager.get(SFX_LOCATION + name + ".mp3", Sound.class);
 	}
 
 	// Retrieves a song
 	public Music getMusic(String name) {
-		return musicManager.get(name, Music.class);
+		return musicManager.get(MUSIC_LOCATION + name + ".mp3", Music.class);
 	}
 
 	// Retrieves a texture

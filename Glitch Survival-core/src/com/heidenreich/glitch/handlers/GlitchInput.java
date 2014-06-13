@@ -5,7 +5,10 @@ public class GlitchInput {
 	public static boolean pdown;
 	public static int x;
 	public static int y;
-
+	public static int xx;
+	public static int yy;
+	
+	
 	public static boolean[] keys;
 	public static boolean[] pkeys;
 	private static final int NUM_KEYS = 3;

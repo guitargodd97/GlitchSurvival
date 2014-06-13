@@ -15,24 +15,39 @@ public class GlitchInputProcessor extends InputAdapter {
 
 	// Saves a dragged touch
 	public boolean touchDragged(int x, int y, int pointer) {
-		GlitchInput.x = x;
-		GlitchInput.y = Gdx.graphics.getHeight() - y;
+		if (pointer == 0) {
+			GlitchInput.x = x;
+			GlitchInput.y = Gdx.graphics.getHeight() - y;
+		} else if (pointer == 1) {
+			GlitchInput.xx = x;
+			GlitchInput.yy = Gdx.graphics.getHeight() - y;
+		}
 		GlitchInput.down = true;
 		return true;
 	}
 
 	// Saves a touch
 	public boolean touchDown(int x, int y, int pointer, int button) {
-		GlitchInput.x = x;
-		GlitchInput.y = Gdx.graphics.getHeight() - y;
+		if (pointer == 0) {
+			GlitchInput.x = x;
+			GlitchInput.y = Gdx.graphics.getHeight() - y;
+		} else if (pointer == 1) {
+			GlitchInput.xx = x;
+			GlitchInput.yy = Gdx.graphics.getHeight() - y;
+		}
 		GlitchInput.down = true;
 		return true;
 	}
 
 	// Saves a released touch
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		GlitchInput.x = x;
-		GlitchInput.y = Gdx.graphics.getHeight() - y;
+		if (pointer == 0) {
+			GlitchInput.x = x;
+			GlitchInput.y = Gdx.graphics.getHeight() - y;
+		} else if (pointer == 1) {
+			GlitchInput.xx = -100;
+			GlitchInput.yy = -100;
+		}
 		GlitchInput.down = false;
 		return true;
 	}
@@ -42,7 +57,7 @@ public class GlitchInputProcessor extends InputAdapter {
 			GlitchInput.setKey(GlitchInput.BUTTON1, true);
 		if (k == Keys.RIGHT)
 			GlitchInput.setKey(GlitchInput.BUTTON2, true);
-		if(k == Keys.UP)
+		if (k == Keys.UP)
 			GlitchInput.setKey(GlitchInput.BUTTON3, true);
 		return true;
 	}
@@ -52,7 +67,7 @@ public class GlitchInputProcessor extends InputAdapter {
 			GlitchInput.setKey(GlitchInput.BUTTON1, false);
 		if (k == Keys.RIGHT)
 			GlitchInput.setKey(GlitchInput.BUTTON2, false);
-		if(k == Keys.UP)
+		if (k == Keys.UP)
 			GlitchInput.setKey(GlitchInput.BUTTON3, false);
 		return true;
 	}
