@@ -8,6 +8,7 @@ import com.heidenreich.glitch.GlitchGame;
 import com.heidenreich.glitch.handlers.Background;
 import com.heidenreich.glitch.handlers.GlitchInput;
 import com.heidenreich.glitch.handlers.Scores;
+import com.heidenreich.glitch.objects.GUIButton;
 
 public class HighscoreScreen implements Screen {
 
@@ -16,7 +17,7 @@ public class HighscoreScreen implements Screen {
 	private int adShown;
 	private int buffer;
 	private Sprite panel;
-	private Sprite titleBack;
+	private GUIButton title;
 
 	public HighscoreScreen(GlitchGame game) {
 		this.game = game;
@@ -24,9 +25,8 @@ public class HighscoreScreen implements Screen {
 				"background", 8));
 		panel = GlitchGame.assets.getSprite("highscorepanel");
 		panel.setPosition(25, 0);
-		titleBack = GlitchGame.assets.getSprite("button");
-		titleBack.setPosition(
-				(Gdx.graphics.getWidth() - titleBack.getWidth()) / 2, 380);
+		title = new GUIButton(GlitchGame.assets.getAnimatedSprite("button", 2),
+				400, 420);
 		buffer = 0;
 		adShown = 0;
 	}
@@ -35,13 +35,15 @@ public class HighscoreScreen implements Screen {
 		// Clears the screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		game.getBatch().setProjectionMatrix(game.getCam().combined);
 		background.update(delta);
 		background.render(game.getBatch());
 
+		title.update(delta);
+		title.render(game.getBatch());
+		
 		game.getBatch().begin();
 		panel.draw(game.getBatch());
-		titleBack.draw(game.getBatch());
 		game.getFont().draw(game.getBatch(), "Highscores", 270, 445);
 		game.getFont().draw(game.getBatch(), "1. " + Scores.stringScores[0],
 				300, 325);
@@ -55,11 +57,12 @@ public class HighscoreScreen implements Screen {
 				300, 125);
 		game.getBatch().end();
 
+		
 		if (adShown == 0) {
 			game.launchInterstitial();
 			game.getBatch().begin();
-			game.getFont().draw(game.getBatch(), "Loading.... Please wait...",
-					120, 75);
+			game.getFont().draw(game.getBatch(), "Loading.... Please wait.",
+					205, 75);
 			game.getBatch().end();
 		} else {
 			if (!GlitchInput.isDown() && buffer == 0)

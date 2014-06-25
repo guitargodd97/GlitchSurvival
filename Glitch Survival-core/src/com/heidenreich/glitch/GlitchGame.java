@@ -2,6 +2,7 @@ package com.heidenreich.glitch;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.heidenreich.glitch.handlers.Assets;
@@ -14,6 +15,8 @@ public class GlitchGame extends Game {
 	public static final String NAME = "GLITCH SURVIVAL";
 	public static final String VERSION = "1.1";
 	public static final float GRAVITY = -9.81f;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 480;
 	public static final int FLOOR = 60;
 
 	public static Assets assets;
@@ -22,6 +25,7 @@ public class GlitchGame extends Game {
 	private BitmapFont buttonFont;
 	private boolean ads;
 	private IActivityRequestHandler myRequestHandler;
+	private OrthographicCamera cam;
 	private Scores score;
 	private SpriteBatch batch;
 
@@ -38,6 +42,10 @@ public class GlitchGame extends Game {
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(new GlitchInputProcessor());
 		score = new Scores();
+
+		cam = new OrthographicCamera(WIDTH, HEIGHT);
+		cam.setToOrtho(false, WIDTH, HEIGHT);
+
 		this.setScreen(new StartScreen(this));
 	}
 
@@ -85,4 +93,9 @@ public class GlitchGame extends Game {
 	public boolean isShown() {
 		return myRequestHandler.shown();
 	}
+
+	public OrthographicCamera getCam() {
+		return cam;
+	}
+
 }

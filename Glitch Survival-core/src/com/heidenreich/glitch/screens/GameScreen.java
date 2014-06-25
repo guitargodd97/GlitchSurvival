@@ -1,5 +1,6 @@
 package com.heidenreich.glitch.screens;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -77,6 +78,7 @@ public class GameScreen implements Screen {
 		// Clears the screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.setProjectionMatrix(game.getCam().combined);
 		if (running) {
 			background.update(delta);
 			background.render(batch);
@@ -139,14 +141,22 @@ public class GameScreen implements Screen {
 				time = minutes + ":0" + seconds;
 			else
 				time = minutes + ":" + seconds;
-			batch.begin();
-			game.getFont().draw(batch, time, 330, 55);
-			batch.end();
 
 			if (enemies.size * 2 < seconds + (minutes * 60))
 				enemies.add(new Enemy());
 			if (Math.random() * 1000 < 1)
 				GlitchGame.assets.getSound("glitch").play();
+
+			if (seconds < 5 && Gdx.app.getType() == ApplicationType.Android) {
+				game.getBatch().begin();
+				game.getFont().draw(game.getBatch(),
+						"Tilt to move. Tap to jump.", 145, 50);
+				game.getBatch().end();
+			} else {
+				batch.begin();
+				game.getFont().draw(batch, time, 330, 55);
+				batch.end();
+			}
 		} else {
 			String time = "";
 			if (seconds < 10)

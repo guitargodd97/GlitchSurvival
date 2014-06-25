@@ -20,9 +20,6 @@ public class Player {
 	private boolean jumping;
 	private boolean left;
 	private float gravityMultiplier = 0.075f;
-	private GUIButton jumpB;
-	// private GUIButton leftB;
-	// private GUIButton rightB;
 	private Rectangle rect;
 	private Vector2 location;
 	private Vector2 velocity;
@@ -46,13 +43,6 @@ public class Player {
 		jumping = false;
 		rect = new Rectangle(location.x, location.y, 45, 45);
 		left = false;
-		jumpB = new GUIButton(GlitchGame.assets.getAnimatedSprite("jumpbutton",
-				2), 750, 35);
-		// leftB = new
-		// GUIButton(GlitchGame.assets.getAnimatedSprite("leftbutton",
-		// 2), 25, 35);
-		// rightB = new GUIButton(GlitchGame.assets.getAnimatedSprite(
-		// "rightbutton", 2), 75, 35);
 	}
 
 	public void update(float delta) {
@@ -63,11 +53,6 @@ public class Player {
 		idleAlt.update(delta);
 		walkingright.update(delta);
 		walkingleft.update(delta);
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			jumpB.update(delta);
-			// leftB.update(delta);
-			// rightB.update(delta);
-		}
 	}
 
 	public void render(SpriteBatch batch) {
@@ -98,11 +83,6 @@ public class Player {
 			}
 		}
 		batch.end();
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			jumpB.render(batch);
-			// leftB.render(batch);
-			// rightB.render(batch);
-		}
 	}
 
 	private void handleInput() {
@@ -118,7 +98,7 @@ public class Player {
 			else
 				velocity.x /= 2;
 
-			if (jumpB.isClicked() && ground) {
+			if (Gdx.input.isTouched() && ground) {
 				velocity.y = 12f;
 				ground = false;
 				jumping = true;
@@ -126,7 +106,7 @@ public class Player {
 			} else
 				velocity.y += GlitchGame.GRAVITY * gravityMultiplier;
 
-			if (!jumpB.isClicked() && jumping)
+			if (!Gdx.input.isTouched() && jumping)
 				jumping = false;
 
 			if (location.x < 10) {
