@@ -136,6 +136,7 @@ public class GameScreen implements Screen {
 			int x = (int) ((curTime - startTime) / 1000 + 0.5);
 			minutes = (int) (x / 60);
 			seconds = x % 60;
+
 			String time = "";
 			if (seconds < 10)
 				time = minutes + ":0" + seconds;
@@ -178,6 +179,9 @@ public class GameScreen implements Screen {
 				Scores.sendScore(minutes, seconds);
 				game.disableAds();
 				game.setScreen(new HighscoreScreen(game));
+				if (seconds < 30)
+					GlitchGame.EASY_DEATH++;
+				GlitchGame.TIME += seconds + (minutes * 60);
 			}
 		}
 	}

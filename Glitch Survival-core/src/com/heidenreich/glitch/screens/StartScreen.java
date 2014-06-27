@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.heidenreich.glitch.GlitchGame;
 import com.heidenreich.glitch.handlers.Background;
 import com.heidenreich.glitch.objects.GUIButton;
@@ -16,6 +17,10 @@ public class StartScreen implements Screen {
 	private GUIButton quit;
 	private GUIButton start;
 	private GUIButton title;
+	private int minutes;
+	private int seconds;
+	private long curTime;
+	private long startTime;
 	private SpriteBatch batch;
 
 	public StartScreen(GlitchGame game) {
@@ -37,6 +42,7 @@ public class StartScreen implements Screen {
 		GlitchGame.assets.getMusic(
 				"glitch" + ((int) (((Math.random() * 232493291) % 9) % 3 + 1)))
 				.play();
+		startTime = TimeUtils.millis();
 	}
 
 	public void render(float delta) {
@@ -68,11 +74,15 @@ public class StartScreen implements Screen {
 		if (Gdx.input.isTouched() && x / Gdx.graphics.getWidth() > 0.1875f
 				&& x / Gdx.graphics.getWidth() < 0.8125f) {
 			if (y / Gdx.graphics.getHeight() > 0.4583f
-					&& y / Gdx.graphics.getHeight() < 0.6667f)
+					&& y / Gdx.graphics.getHeight() < 0.6667f) {
 				game.setScreen(new GameScreen(game));
+				GlitchGame.TIME += seconds + (minutes * 60);
+			}
 			if (y / Gdx.graphics.getHeight() > 0.25f
-					&& y / Gdx.graphics.getHeight() < 0.4583f)
+					&& y / Gdx.graphics.getHeight() < 0.4583f) {
 				game.setScreen(new HighscoreScreen(game));
+				GlitchGame.TIME += seconds + (minutes * 60);
+			}
 			if (y / Gdx.graphics.getHeight() > 0.04167f
 					&& y / Gdx.graphics.getHeight() < 0.25f)
 				Gdx.app.exit();
@@ -89,6 +99,11 @@ public class StartScreen implements Screen {
 		batch.begin();
 		game.getFont().draw(batch, "Quit", 340, 85);
 		batch.end();
+
+		curTime = TimeUtils.millis();
+		int temp = (int) ((curTime - startTime) / 1000 + 0.5);
+		minutes = (int) (temp / 60);
+		seconds = temp % 60;
 	}
 
 	public void resize(int width, int height) {
